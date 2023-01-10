@@ -2,7 +2,7 @@
 
 This repository contains the open source development of the stand-alone application for GraFT using MATLAB.
 
-GraFT (Graph-Filtered Temporal) dictionaty learning is a signal extraction method for spatio-temporal data. GraFT uses a diffusion map to learn a graph over spatial pixels that enables for stochastic filtering of learned sparse representations over each pixel's time-trace. The sparse representaions are modeled as in a heirarchical dictionary learning framework with correlated decompositions over the graph.
+GraFT (Graph-Filtered Temporal) dictionary learning is a signal extraction method for spatio-temporal data. GraFT uses a diffusion map to learn a graph over spatial pixels that enables for stochastic filtering of learned sparse representations over each pixel's time-trace. The sparse representations are modeled as in a hierarchical dictionary learning framework with correlated decompositions over the graph.
 
 # GraFT-analysis
 
