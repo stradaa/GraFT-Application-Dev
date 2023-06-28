@@ -20,7 +20,7 @@ classdef GRAFT
     
     properties
         Data        struct  = struct
-        Processed   struct  = struct
+        GraFTed     struct  = struct
         Parameters  PARAMS  = PARAMS
         Comments    struct  = struct
         About       struct  = struct
@@ -35,7 +35,7 @@ classdef GRAFT
             obj = initData(obj);
 
             % Processed
-            obj = initProcessed(obj);
+            obj = initGraFTed(obj);
 
             % Parameters
             obj = initParameters(obj);
@@ -54,17 +54,17 @@ classdef GRAFT
             d.Data.original             = [];
             d.Data.motion_corrected     = [];
             d.Data.projection           = [];
+            d.Data.mask                 = [];
+            d.Data.crop                 = [];
         end
 
-        function p = initProcessed(p)
-            p.Processed.spatial         = [];
-            p.Processed.temporal        = [];
-            p.Processed.ROIs            = [];
-            p.Processed.plot_image      = [];
-            p.Processed.plot_line       = [];
-            p.Processed.projection      = [];
-            p.Processed.mask            = [];
-            p.Processed.crop            = [];
+        function p = initGraFTed(p)
+            p.GraFTed.spatial         = [];
+            p.GraFTed.temporal        = [];
+            p.GraFTed.ROIs            = [];
+            p.GraFTed.plot_image      = [];
+            p.GraFTed.plot_line       = [];
+            p.GraFTed.projection      = [];
         end
 
         function p = initParameters(p)
@@ -93,7 +93,8 @@ classdef GRAFT
         function e = initEncoding(e)
             e.Encoding.data_path        = [];
             e.Encoding.loading_type     = [];
-            e.Encoding.files            = [];   
+            e.Encoding.files            = [];
+            e.Encoding.flag             = "";   % possible error
         end
     end
 end
