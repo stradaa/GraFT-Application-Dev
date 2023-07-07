@@ -7,11 +7,8 @@ classdef GRAFT
     % USAGE:
     %               obj = GRAFT()
     %
-    % :param : 
-    % :type : 
-    %
-    % :param :
-    % :type :
+    % :param -: None
+    % :type -: None
     %
     % :returns: - :GRAFT Class Object: 
     %
@@ -91,10 +88,12 @@ classdef GRAFT
         end
 
         function e = initEncoding(e)
-            e.Encoding.data_path        = [];
+            e.Encoding.data_path        = [0 0];
             e.Encoding.loading_type     = [];
             e.Encoding.files            = [];
-            e.Encoding.flag             = "";   % possible error
+            e.Encoding.flag             = "";
+            e.Encoding.last_val_load    = [];
+            e.Encoding.mat_struct       = struct;
         end
     end
 end

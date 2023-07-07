@@ -6,6 +6,7 @@ function a = load_app_data2(a)
 %   Supports following type of loading:
 %       - Local Folder/File
 %       - Remote S3 (Coming soon)
+%       - GRAFT Object
 %
 %   Supports following extensions:
 %       - .TIF / .JPEG / .PNG
@@ -17,8 +18,8 @@ function a = load_app_data2(a)
 %
 % :returns: a :GRAFT Class Object: Data structure containing loaded files
 %                                  within the a.Encoding.files parameter.
-%
-%
+% 
+% 
 % 06.24.2023 - Alex Estrada
 
 
@@ -29,7 +30,7 @@ switch a.Encoding.loading_type
         files = dir(a.Encoding.data_path);
         
         % select fields
-            desiredFieldNames = {'Name', 'Format', 'FileSize', 'Width', 'Height', 'ColorType'};
+        desiredFieldNames = {'Name', 'Format', 'FileSize', 'Width', 'Height', 'ColorType'};
         out = cell2table(cell(0, numel(desiredFieldNames)), 'VariableNames', desiredFieldNames);
 
         % Iterate over each file/folder in the directory
@@ -63,8 +64,18 @@ switch a.Encoding.loading_type
             end
         end
 
-        % Update Data.files
-        a.Encoding.files = out;
+        % Update Data.files if items found
+        if ~isempty(out)
+            a.Encoding.files = out;
+        else
+            a.Encoding.flag = sprintf("No files found." + ...
+                "Only searches for following extensions:\n" + ...
+                "-%s\n" + ...
+                "-%s\n" + ...
+                "-%s\n" + ...
+                "-%s\n" + ...
+                "-%s", imageExtensions{:});
+        end
     
     case 'File'
         %% File
@@ -99,10 +110,27 @@ switch a.Encoding.loading_type
             case '.mat'
                 % get .mat info
                 info = matfile(a.Encoding.data_path);
-                field_names = fieldnames(info);
+                
+                % check if selected field
+                if numel(fields(a.Encoding.mat_struct))
+                    temp_fieldname = a.Encoding.mat_struct.field_name;
+                    % override info
+                    try
+                        info = info.(temp_fieldname);
+                    catch
+                        % nested struct within struct. break
+                        msg = "Too many nested structures. Select another variable.";
+                        a.Encoding.flag = a.Encoding.flag + msg;
+                        return
+                    end
+                end
+                
+                % remove 'Properties' from matfile loading
+                field_names = fields(info);
                 if strcmp(field_names{1}, 'Properties')
                     field_names = field_names(2:end);
                 end
+                
                 
                 % check if proper load
                 if isempty(field_names)
@@ -134,4 +162,3 @@ switch a.Encoding.loading_type
 end % switch end
 
 end % function end
-
