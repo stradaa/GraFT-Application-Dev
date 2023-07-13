@@ -6,11 +6,11 @@ function a = load_app_data2(a)
 %   Supports following type of loading:
 %       - Local Folder/File
 %       - Remote S3 (Coming soon)
-%       - GRAFT Object
 %
 %   Supports following extensions:
 %       - .TIF / .JPEG / .PNG
 %       - .MAT
+%       - GRAFT Object
 %       - .NWB -TODO-
 % 
 % :param a: Data structure for GraFT App
@@ -154,6 +154,62 @@ switch a.Encoding.loading_type
 
             case '.NWB'
                 % TODO
+
+            case '.h5'
+                % get info
+                info = h5info(a.Encoding.data_path);
+                
+                % initiate table
+                tbl_names = {'Name','Type','Size','Datasets'};
+                out = cell2table(cell(0, numel(tbl_names)), 'VariableNames', tbl_names);
+                
+                % root name
+                root_name = string(info.Name);
+
+                % root groups
+                if ~isempty(info.Groups)
+                    for i = 1:length(info.Groups)
+                        % name
+                        dir_out = string(info.Groups(i).Name);
+
+                        % datasets w/in
+                        datasets_out = "";
+                        for j = 1:length(info.Groups.Datasets)
+                            name = string(info.Groups.Datasets(j).Name);
+                            datasets_out = datasets_out + name + "|";
+                        end
+                        
+                        % new line
+                        new_ln = {dir_out,"Group","--",datasets_out};
+                        out = [out; new_ln];
+                    end
+                end
+                
+                % root datasets
+                if ~isempty(info.Datasets)
+                    for i = 1:length(info.Datasets)
+                        % name
+                        dir_out = root_name + string(info.Datasets(i).Name);
+
+                        % size + type
+                        dataspace = info.Datasets(i).Dataspace;
+                        if length(fieldnames(dataspace)) > 1            % not empty structure
+                            size_out = num2str(dataspace.Size);
+                            if ischar(size_out)
+                                size_out = string(size_out);
+                            end
+                        else
+                            size_out = "";
+                        end
+
+                        % new line
+                        new_ln = {dir_out,"Dataset",size_out,"--"};
+                        out = [out; new_ln];
+                    end
+                end
+                
+                % Update encoding
+                a.Encoding.files = out;
         end
 
     case 'S3'
