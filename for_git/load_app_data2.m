@@ -112,16 +112,15 @@ switch a.Encoding.loading_type
                 info = matfile(a.Encoding.data_path);
                 
                 % check if selected field
-                if numel(fields(a.Encoding.mat_struct))
-                    temp_fieldname = a.Encoding.mat_struct.field_name;
+                if numel(fields(a.Encoding.nest))
+
+                    temp_fieldname = a.Encoding.nest.field_name;
                     % override info
                     try
                         info = info.(temp_fieldname);
                     catch
-                        % nested struct within struct. break
-                        msg = "Too many nested structures. Select another variable.";
-                        a.Encoding.flag = a.Encoding.flag + msg;
-                        return
+                        % problem
+                        error("NOTSUREWHAT")
                     end
                 end
                 
@@ -130,7 +129,6 @@ switch a.Encoding.loading_type
                 if strcmp(field_names{1}, 'Properties')
                     field_names = field_names(2:end);
                 end
-                
                 
                 % check if proper load
                 if isempty(field_names)

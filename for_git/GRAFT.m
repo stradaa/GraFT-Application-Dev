@@ -93,7 +93,7 @@ classdef GRAFT
             e.Encoding.files            = [];
             e.Encoding.flag             = "";
             e.Encoding.last_val_load    = [];
-            e.Encoding.mat_struct       = struct;
+            e.Encoding.nest             = struct;
         end
     end
 end
