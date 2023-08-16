@@ -24,7 +24,13 @@ else
 end
 
 %% Temporary load
-t_params = t.var_to_save;
+temp_field = fieldnames(t);
+temp = t.(temp_field{:});
+if contains(name, '.GRAFT')
+    t_params = temp.Parameters;
+elseif contains(name, '.PARAMS')
+    t_params = temp;
+end
 
 %% Check mask
 if ~isempty(t_params.Parameters.mask)
