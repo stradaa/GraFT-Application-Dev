@@ -23,6 +23,7 @@ data_names = ["a.G.Data.pre_graft", "a.G.GraFTed.dl_reconstruct", "a.G.GraFTed.s
 
 %% Load selected data
 a.G = loadSpatialMovies(a.G, index);
+a.Status = fixMaskView(a, data_names(index));
 
 %% Set GridLayout Scaling & Visibilities
 switch num_idx
@@ -35,7 +36,7 @@ switch num_idx
         % Name
         a.GRAFTRECONSTRUCTEDPanel.Title = titles(index);
         % Plot
-        temp1 = eval(data_names(index));
+        temp1 = a.Status.data_movies{1};
         imagesc(temp1(:,:,a.Status.m_frame), "Parent", a.UIAxes3_2);
         axis(a.UIAxes3_2, 'image')
     case 2
@@ -48,8 +49,8 @@ switch num_idx
         a.ORIGINALPanel.Title           = titles(index(1));
         a.GRAFTRECONSTRUCTEDPanel.Title = titles(index(2));
         % Plot
-        temp1 = eval(data_names(index(1)));
-        temp2 = eval(data_names(index(2)));
+        temp1 = a.Status.data_movies{1};
+        temp2 = a.Status.data_movies{2};
         imagesc(temp1(:,:,a.Status.m_frame), 'Parent', a.UIAxes3);
         imagesc(temp2(:,:,a.Status.m_frame), 'Parent', a.UIAxes3_2);
         axis(a.UIAxes3, 'image')
@@ -65,9 +66,9 @@ switch num_idx
         a.GRAFTRECONSTRUCTEDPanel.Title = titles(index(2));
         a.ABSDIFFERENCEPanel.Title      = titles(index(3));
         % Plot
-        temp1 = eval(data_names(index(1)));
-        temp2 = eval(data_names(index(2)));
-        temp3 = eval(data_names(index(3)));
+        temp1 = a.Status.data_movies{1};
+        temp2 = a.Status.data_movies{2};
+        temp3 = a.Status.data_movies{3};
         imagesc(temp1(:,:,a.Status.m_frame), 'Parent', a.UIAxes3);
         imagesc(temp2(:,:,a.Status.m_frame), 'Parent', a.UIAxes3_2);
         imagesc(temp3(:,:,a.Status.m_frame), 'Parent', a.UIAxes3_3);
@@ -78,7 +79,7 @@ end
 
 %% Save current active plots
 a.Status.active_movies = data_names(index);
-a.Slider.Limits = [1, a.Status.max_m_frame];
+a.Slider.Limits = [1, size(temp1,3)];
 
 %% Final visibilities
 a.GridLayout80.Visible = 'on';

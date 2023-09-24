@@ -26,7 +26,7 @@ numPix = sum(sum(bsxfun(@gt, imgArray, 0.1*max(max(imgArray,[],1),[],2)  ),1),2)
 imgArray = imgArray(:,:,(numPix>=p.filterSize(1))&(numPix<=p.filterSize(2)));
 
 numImgs = size(imgArray,3);
-allColors = distinguishable_colors(numImgs,'k');
+allColors = distinguishable_colors(numImgs,{'w', 'k'});
 
 imgFull = zeros(size(imgArray,1),size(imgArray,2),3);
 for ll = 1:numImgs
