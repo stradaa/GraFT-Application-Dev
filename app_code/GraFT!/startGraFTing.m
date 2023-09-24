@@ -10,8 +10,11 @@ if strcmp(a.G.Parameters.Parameters.patchGraFT, 'false')
                          'DefaultOption', 1, 'CancelOption', 3);
     if strcmp(selection, 'Plot & Start GraFT')
         a.G.Parameters.Parameters.plot = true;
-    else
+    elseif strcmp(selection, 'No Plot % Start GraFT')
         a.G.Parameters.Parameters.plot = false;
+    elseif strcmp(selection, 'Cancel')
+        a.Status.result_flag = 'Cancelled';
+        return
     end
 else
     % Ensure selection
@@ -23,6 +26,7 @@ else
 end
 
 if strcmp(selection, 'Cancel')
+    a.Status.result_flag = 'Cancelled';
     return
 end
 
@@ -59,6 +63,14 @@ end
 %% UIProgress
 d = uiprogressdlg(a.UIFigure,'Title','GraFTing',...
     'Cancelable','off', 'Indeterminate','on');
+
+if isempty(a.fset.p)
+    try
+        a.fset.p = parpool('Processes', a.UtilizeSpinner.Value);
+    catch
+        disp('Parallel pool failed');
+    end
+end
 
 %% GRAFT
 if a.G.Parameters.Parameters.patchGraFT

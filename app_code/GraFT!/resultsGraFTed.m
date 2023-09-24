@@ -1,6 +1,11 @@
 function [g, s] = resultsGraFTed(g, s)
-%INITGRAFTED
+%RESULTSGRAFTED
 
+
+%% Check for flag
+if ~isempty(s.result_flag)
+    return
+end
 
 %% Check GraFT results
 if isempty(g.GraFTed.spatial) || isempty(g.GraFTed.temporal)
