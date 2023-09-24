@@ -33,8 +33,8 @@ switch s
         a.Status = setStatus();
         a.G.Data.pre_graft = [];
         a.G.Data.projection = [];
-        a.G.Data.mask = [];
-        a.G.Data.crop = [];
+        a.G.Parameters.Parameters.mask = [];
+        a.G.Parameters.Parameters.crop = [];
         % Update Log
         t = string(datetime("now", "Format","HH:mm:ss"));
         msg = sprintf("%s >> All pre-processes cleared.", t);
