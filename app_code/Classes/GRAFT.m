@@ -57,7 +57,19 @@ classdef GRAFT
             d.Data.original_size        = [];
             d.Data.projection           = [];
         end
-        
+
+        function obj = initAbout(obj)
+            % Initializing About properties:
+            %       - .name         --> string
+            %       - .author       --> string
+            %       - .date_time    --> datetime
+
+            date = datetime('now', 'Format', 'yyy_MM_d_HHmm');
+            obj.About.name      = "";
+            obj.About.author    = "";
+            obj.About.date_time = date;
+        end
+
         function p = initPreprocess(p)
             % Motion Correction
             p.PreProcess.motco_method   = 'NoRMCorre';
@@ -68,7 +80,6 @@ classdef GRAFT
             p.PreProcess.wav_lvl        = 4;
             p.PreProcess.wav_noise_est  = 'Level Independent';
             p.PreProcess.wav_thresh     = 'James-Stein';
-            p.PreProcess.preprocess_log = cell(20,2); % later cell2table
         end
 
         function p = initGraFTed(p)
@@ -92,19 +103,7 @@ classdef GRAFT
         function l = initLog(l)
             l.Log.pre_processed    = [];
             l.Log.parameters       = [];
-            l.Log.analysis         = [];
-        end
-
-        function obj = initAbout(obj)
-            % Initializing About properties:
-            %       - .name         --> string
-            %       - .author       --> string
-            %       - .date_time    --> datetime
-
-            date = datetime('now', 'Format', 'yyy_MM_d_HHmm');
-            obj.About.name      = "";
-            obj.About.author    = "";
-            obj.About.date_time = date;
+            % l.Log.analysis         = [];
         end
 
         function e = initEncoding(e)
