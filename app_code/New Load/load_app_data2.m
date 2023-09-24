@@ -234,6 +234,17 @@ switch a.Encoding.loading_type
                 a.Encoding.files = out;
         end
 
+    case 'GRAFT'
+        %% GRAFT File
+        % first time load
+        if contains(a.Encoding.data_path, '.GRAFT')
+            temp = load(a.Encoding.data_path);
+            a = temp.GRAFT_obj;
+        else
+            a.Encoding.flag = 'GRAFT file not detected.';
+        end
+
+        
     case 'S3'
         %% Remote S3
 
