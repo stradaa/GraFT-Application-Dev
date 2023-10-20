@@ -11,13 +11,13 @@ if height(newTable) > 1
     out = zeros(newTable.Width(1), newTable.Height(2), height(newTable));
     base = string(g.Encoding.data_path);
     for k=1:height(newTable)
-        out(:,:,k) = imread(base+"\"+newTable.Name(k));
+        out(:,:,k) = imread(base + filesep + newTable.Name(k));
     end
 end
 
 %% Single Selection
 if height(newTable) == 1
-    fileName = string(g.Encoding.data_path) + "\" + newTable.Name;
+    fileName = string(g.Encoding.data_path) + filesep + newTable.Name;
     [~, ~, extension] = fileparts(fileName);
     if strcmp(extension, '.tif')
         % load all tif files

@@ -1,7 +1,10 @@
 function a = saveParams(a)
 %SAVEPARAMS Saves GUI parameters to GRAFT properties
 %   Current values from GUI elements used for updating GRAFT class object
-%   properties: Parameters and About. 
+%   properties: Parameters and About.
+%
+%   Prompts for user file path to save .PARAMS file before saving. User is
+%   updated with file saving status.
 % 
 % Note: Changing GUI elements names will require function update.
 %
@@ -25,11 +28,52 @@ a.G.Parameters.Parameters.lamCont = a.continuityregularizationEditField.Value;
 a.G.Parameters.Parameters.lamContStp = a.continuitystepsEditField.Value;
 a.G.Parameters.Parameters.numreps = a.numberofRWL1GFrepsEditField.Value;
 
-%% About
+%% ABOUT
 a.G.Parameters.About.author = a.AuthorEditField.Value;
 a.G.Parameters.About.GraFT_Data = a.StudyEditField.Value;
 a.G.Parameters.About.name = a.NameEditField.Value;
 a.G.About.name = a.StudyEditField.Value;
 a.G.About.author = a.AuthorEditField.Value;
+
+%% SAVE
+var_to_save = a.G.Parameters;
+
+% getting desire name of file
+name = string(a.NameEditField.Value);
+if strcmp(name, "")
+    % if no name specified
+    n = a.G.Parameters.Parameters.n_dict;
+    patch = a.G.Parameters.Parameters.patchGraFT;
+    t_day = string(datetime("now", "Format","MMMMdyy"));
+    name = sprintf("ndict%d_tau%d_patchGraFT%s_%s", n, ...
+                                            a.G.Parameters.Parameters.tau, ...
+                                            string(patch), ...
+                                            t_day);
+end
+
+% path save + name 
+path = uigetdir("Select Folder to Save");
+if ~path==0
+    name = string(path) + filesep + name + ".PARAMS.mat";
+    figure(a.UIFigure)
+else
+    figure(a.UIFigure)
+    return
+end
+
+% save
+try
+    save(name, "var_to_save");
+    
+    % update
+    t = string(datetime("now", "Format","HH:mm:ss"));
+    msg = sprintf("%s >> Parameters saved in location: %s", t, name);
+    a.TextArea_4.Value = sprintf([repmat('%s\n', 1, numel(a.TextArea_2.Value)) '%s\n'], ...
+    a.TextArea_4.Value{:}, msg);
+catch
+    msg = 'Something went wrong. File not saved. Check selected folder permissions to write.';
+    uialert(a.UIFigure, msg, 'Warning', 'Icon','warning', 'Modal',true); 
+end
+
 end
 
